@@ -4,7 +4,8 @@
   'use strict';
   const canvas = document.getElementById('world-canvas');
   const ctx = canvas.getContext('2d', { alpha: true });
-  let yaw = -0.65, pitch = 0.55, zoom = 1;
+  // Elevated three-quarter view: the audience sees the TOP of the robot and hives.
+  let yaw = -0.65, pitch = 1.08, zoom = 1;
   let drag = null, lastWidth = 0, lastHeight = 0, movingX = 0;
   const shades = {
     metal:'#6d8d87', body:'#b6cac1', track:'#263d3c', trackRim:'#4f6a64',
@@ -20,7 +21,9 @@
     const dx=p[0]-view.tx,dy=p[1]-view.ty,dz=p[2]-view.tz;
     const a=dx*Math.cos(yaw)-dy*Math.sin(yaw);
     const b=dx*Math.sin(yaw)+dy*Math.cos(yaw);
-    return {x:view.cx+a*view.scale,y:view.cy+(b*Math.sin(pitch)-dz*Math.cos(pitch))*view.scale,depth:b*Math.cos(pitch)+dz*Math.sin(pitch)};
+    // Depth grows AWAY from the viewer. Higher Z is closer to an elevated camera,
+    // so subtract it; otherwise bottom faces cover the lid and chassis tops.
+    return {x:view.cx+a*view.scale,y:view.cy+(b*Math.sin(pitch)-dz*Math.cos(pitch))*view.scale,depth:b*Math.cos(pitch)-dz*Math.sin(pitch)};
   }
   function addFace(points,color,alpha=1,stroke=null){
     const ps=points.map(project);
@@ -141,17 +144,17 @@
     const usablePanel=document.getElementById('copy-panel'),pr=usablePanel.getBoundingClientRect();
     let anchorX=panelOpen&&w>720?Math.max(w*.68,(pr.right+w)/2):w*.52;
     let anchorY=panelOpen&&w<=720?h*.77:h*.54;
-    const isWorld=[0,2,3,4,5].includes(active);
+    const isWorld=[0,3,4,5,6].includes(active);
     if(!isWorld){
       view={cx:w*.74,cy:h*.51,tx:0,ty:0,tz:0,scale:Math.min(w,h)*.09};
       groundGrid(10);renderShapes();return;
     }
-    const closeup=active===4;
-    const tx=active===2?2.8:closeup?0:active===5?2.7:2.2;
+    const closeup=active===5;
+    const tx=active===3?2.8:closeup?0:active===6?2.7:2.2;
     view={cx:anchorX,cy:anchorY,tx,ty:.5,tz:.7,scale:Math.min(w,h)*(closeup?.17:.113)*zoom*(w<720?.75:1)};
     groundGrid(12);
-    if(active===4){robot(0,0,0,{loaded:true,expanded:true,part:state.partIndex});}
-    else if(active===5){
+    if(active===5){robot(0,0,0,{loaded:true,expanded:true,part:state.partIndex});}
+    else if(active===6){
       const rise=(state.sandboxSlope||0)*.025;
       addFace([[2.0,-1.7,.025],[5.5,-1.7,rise],[5.5,1.4,rise],[2,1.4,.025]],'#2e6251',.75);
       line([2,-1.7,.03],[5.5,-1.7,rise],'#8ce0ac',2.5,.9);
@@ -159,7 +162,7 @@
       hive(1.1,0,0,!!state.sandboxOpened,true);station(6,0,0,false);
       robot(3.3,0,0,{loaded:state.sandboxLoad>10,expanded:state.sandboxOpened});
       pathPoints([[1.1,-1.5],[3.3,-1.5],[6,-1.5]]);
-    } else if(active===2){
+    } else if(active===3){
       const positions=[-.6,.9,1.15,3.5,5.8,5.8,3.3,.93];
       const target=positions[state.cycleStep||0];movingX+=(target-movingX)*.12;
       const step=state.cycleStep||0;
@@ -169,7 +172,7 @@
       pathPoints([[1.25,-1.9],[6.1,-1.9]]);
       if(step===2)frame(1.25,-.25,2.02,true);
       if(step===7)frame(1.25,0,1.5,true);
-    } else if(active===3){
+    } else if(active===4){
       hive(1.0,1.4,0,false);station(6.9,-.2,0,true);
       robot(3.9,-1.3,0,{loaded:true,part:state.moduleIndex===0?0:state.moduleIndex===1?3:-1});
       pathPoints([[1,-1.3],[3.9,-1.3],[6.9,-1.3]]);
@@ -180,10 +183,10 @@
     renderShapes();
   }
   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={x:e.clientX,y:e.clientY,yaw,pitch};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
-  canvas.addEventListener('pointermove',e=>{if(!drag)return;yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=clamp(drag.pitch+(e.clientY-drag.y)*.004,.12,1.1);});
+  canvas.addEventListener('pointermove',e=>{if(!drag)return;yaw=drag.yaw+(e.clientX-drag.x)*.006;pitch=clamp(drag.pitch+(e.clientY-drag.y)*.004,.35,1.42);});
   function release(){drag=null;canvas.style.cursor='grab';}
   canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);
   canvas.addEventListener('wheel',e=>{if(e.target!==canvas)return;e.preventDefault();zoom=clamp(zoom*(e.deltaY<0?1.12:.89),.62,1.9);},{passive:false});
   canvas.style.cursor='grab';
-  window.WallEWorld={render,resetView:()=>{yaw=-.65;pitch=.55;zoom=1;},getView:()=>({yaw,pitch,zoom})};
+  window.WallEWorld={render,resetView:()=>{yaw=-.65;pitch=1.08;zoom=1;},getView:()=>({yaw,pitch,zoom})};
 })();

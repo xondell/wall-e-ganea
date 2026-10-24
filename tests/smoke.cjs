@@ -29,26 +29,31 @@ const env={
 env.window.requestAnimationFrame=noop;
 vm.createContext(env);
 for(const file of ['world3d.js','app.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),env,{filename:file});
-assert.equal(env.window.WallEPresentation.getSlideCount(),11);
+assert.equal(env.window.WallEPresentation.getSlideCount(),12);
 assert.match(element('panel-content').innerHTML,/WALL-E/);
-for(let i=0;i<11;i++){
+assert.ok(env.window.WallEWorld.getView().pitch>.9, 'default camera should look from above');
+for(let i=0;i<12;i++){
   env.window.WallEPresentation.navigate(i);
-  assert.equal(element('slide-count').textContent,`${String(i+1).padStart(2,'0')} / 11`);
+  assert.equal(element('slide-count').textContent,`${String(i+1).padStart(2,'0')} / 12`);
   env.window.WallEWorld.render(i,env.window.WallEPresentation.getState(),true);
 }
-env.window.WallEPresentation.navigate(2);
+env.window.WallEPresentation.navigate(1);
+assert.match(element('panel-content').innerHTML,/Борис Колесов/);
+env.window.WallEPresentation.navigate(8);
+assert.match(element('graphics').innerHTML,/60M/);
+env.window.WallEPresentation.navigate(3);
 assert.match(element('graphics').innerHTML,/cycle-item/);
 const graphicsAction=listeners.get('document:click');
 graphicsAction({target:{closest(sel){return sel==='[data-action]'?{dataset:{action:'cycle',value:'7'}}:null;}}});
 assert.equal(env.window.WallEPresentation.getState().cycleStep,7);
 assert.match(element('graphics').innerHTML,/Вставить именно в A:S/);
-env.window.WallEPresentation.navigate(5);
+env.window.WallEPresentation.navigate(6);
 graphicsAction({target:{closest(sel){return sel==='[data-action]'?{dataset:{action:'obstacle',value:'0'}}:null;}}});
 assert.equal(env.window.WallEPresentation.getState().sandboxObstacle,true);
-env.window.WallEWorld.render(5,env.window.WallEPresentation.getState(),false);
+env.window.WallEWorld.render(6,env.window.WallEPresentation.getState(),false);
 listeners.get('collapse:click')();
 assert.equal(element('copy-panel').hidden,true);
 assert.equal(element('restore').hidden,false);
 listeners.get('restore:click')();
 assert.equal(element('copy-panel').hidden,false);
-console.log('PASS: 11 slides, route steps, scene render, parameter actions, panel collapse/restore.');
+console.log('PASS: 12 slides, elevated camera, personal slide, token estimate, route steps, scene render, parameter actions, panel collapse/restore.');
