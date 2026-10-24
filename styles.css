@@ -34,3 +34,69 @@
 .glm-zoom img{display:block;width:100%;height:calc(100% - 46px);object-fit:contain;min-height:0}.glm-zoom-note{font-size:12px;line-height:1.35;text-align:center;color:#f0dbab}
 @media(max-width:1000px){.about-stage{left:48%;right:2%}.about-number{font-size:clamp(94px,14vw,180px)}.about-name{font-size:clamp(27px,4vw,50px)}.research-metrics{gap:10px}.research-metric strong{font-size:clamp(47px,5.5vw,84px)}.glm-proof{left:48%}.glm-zoom{left:45%}}
 @media(max-width:720px){.about-stage{left:6%;right:6%;top:53%;bottom:calc(var(--bottom) + 10%)}.about-kicker{font-size:9px}.about-number{font-size:clamp(85px,25vw,150px)}.about-number span{font-size:20px}.about-name{font-size:clamp(24px,9vw,48px);margin-top:7px}.about-lines{gap:5px;margin-top:12px}.about-lines span{font-size:8px;padding-top:6px}.research-metrics{top:53%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.research-metric strong,.research-metric.self-estimate strong{font-size:clamp(27px,8vw,45px)}.research-metric span{font-size:8px}.glm-proof{left:4%;right:4%;top:65%;max-height:16%}.glm-image-cut{max-height:13vh;aspect-ratio:2.9}.glm-caption{font-size:8px}.glm-zoom{left:2%;right:2%;top:47%;bottom:calc(var(--bottom) + 6px);padding:6px}.glm-zoom-note{font-size:9px}}
+
+
+/* WALL_E_GLM_SCREENSHOT_UPDATE_20261025 */
+.glm-proof {
+  position: absolute;
+  left: 45%;
+  right: 4%;
+  top: 47%;
+  max-height: 34%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.glm-image-cut {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1931 / 815;
+  max-height: 29vh;
+  overflow: hidden;
+  background: #1c1c1c;
+  border: 1px solid rgba(159, 201, 172, .25);
+  border-radius: 12px;
+}
+
+.glm-image-cut img {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  left: auto !important;
+  top: auto !important;
+  object-fit: contain !important;
+}
+
+.glm-caption {
+  text-align: right;
+  color: #a8beb3;
+  font-size: 10px;
+}
+
+@media (max-width: 1000px) {
+  .glm-proof {
+    left: 48%;
+    right: 2%;
+  }
+}
+
+@media (max-width: 720px) {
+  .glm-proof {
+    left: 4%;
+    right: 4%;
+    top: 67%;
+    max-height: 17%;
+  }
+
+  .glm-image-cut {
+    max-height: 15vh;
+  }
+
+  .glm-caption {
+    font-size: 8px;
+  }
+}
