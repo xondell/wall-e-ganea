@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#091316">
+  <meta name="description" content="WALL-E — концепция роботизации пасек Ganea Group: исследование, архитектура, цифровая лаборатория и дорожная карта.">
+  <title>WALL-E · Роботизация пасек · Ganea Group</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main id="presentation" class="presentation" aria-label="Презентация WALL-E">
+    <section id="slide" class="slide" aria-live="polite">
+      <div id="scene" class="scene" data-scene>
+        <div id="visual-layer" class="visual-layer" data-visual>
+          <canvas id="world-canvas" aria-label="Интерактивная условная 3D-модель робота и пасеки"></canvas>
+          <div class="ambient-glow" aria-hidden="true"></div>
+          <div id="graphics" class="graphics"></div>
+          <div class="world-hint" id="world-hint" hidden>Условная 3D-иллюстрация · перетаскивайте для поворота · колёсико для масштаба</div>
+        </div>
+        <div class="ambient-noise" aria-hidden="true"></div>
+
+        <aside id="copy-panel" class="copy-panel" aria-label="Описание слайда">
+          <div class="panel-heading">
+            <span id="eyebrow" class="eyebrow"></span>
+            <button type="button" id="collapse" class="icon-button collapse" title="Скрыть панель (T)" aria-label="Скрыть панель с текстом" aria-controls="copy-panel">◂</button>
+          </div>
+          <div id="panel-content"></div>
+        </aside>
+        <button type="button" id="restore" class="restore-button" aria-controls="copy-panel" hidden>▸ <span>Показать текст</span> <kbd>T</kbd></button>
+      </div>
+    </section>
+
+    <header class="topbar">
+      <div class="brand"><span class="brand-symbol">W<span class="brand-dot">•</span>E</span><span class="brand-name">WALL-E <span class="brand-suffix">/ R&amp;D PROGRAM</span></span></div>
+      <div class="topbar-right"><span class="live-dot"></span><span class="status-label">КОНЦЕПЦИЯ · 25.10.2026</span><button id="menu-toggle" class="top-link" title="Оглавление (M)">Оглавление <span>☷</span></button><button id="notes-toggle" class="top-link" title="Заметки (N)">Заметки <kbd>N</kbd></button></div>
+    </header>
+
+    <footer class="footer">
+      <div class="footer-left"><span class="footer-project">GANEA GROUP</span><span class="footer-sep">/</span><span id="footer-section">Концепция</span></div>
+      <div class="timeline" id="timeline" aria-label="Выбор слайда"></div>
+      <div class="footer-right"><button id="prev" class="nav-arrow" aria-label="Предыдущий слайд">←</button><span id="slide-count">01 / 11</span><button id="next" class="nav-arrow" aria-label="Следующий слайд">→</button><button id="fullscreen" class="nav-arrow fullscreen-btn" title="Полный экран (F)" aria-label="Полноэкранный режим">⛶</button></div>
+    </footer>
+
+    <div id="notes" class="notes-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="notes-heading">
+      <div class="notes-head"><div><span class="eyebrow">ЗАМЕТКИ ВЫСТУПАЮЩЕГО</span><h2 id="notes-heading">Что сказать на этом слайде</h2><p class="notes-warning">Внимание: заметки видны всем, если экран транслируется.</p></div><button id="notes-close" class="icon-button" aria-label="Закрыть заметки">✕</button></div>
+      <div id="notes-text" class="notes-text"></div>
+    </div>
+    <div id="menu" class="menu-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="menu-heading">
+      <div class="menu-head"><div><span class="eyebrow">СТРУКТУРА ВСТРЕЧИ</span><h2 id="menu-heading">Оглавление</h2></div><button id="menu-close" class="icon-button" aria-label="Закрыть оглавление">✕</button></div>
+      <div id="menu-grid" class="menu-grid"></div>
+    </div>
+  </main>
+  <script src="./world3d.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
